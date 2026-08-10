@@ -10,33 +10,156 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppBooksRouteImport } from './routes/app.books'
+import { Route as AppLearningRouteImport } from './routes/app.learning'
+import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
+import { Route as AppWalletRouteImport } from './routes/app.wallet'
+import { Route as AppClassesIndexRouteImport } from './routes/app.classes.index'
+import { Route as AppClassesCategoryIdRouteImport } from './routes/app.classes.$categoryId'
+import { Route as AppSessionsSessionIdRouteImport } from './routes/app.sessions.$sessionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBooksRoute = AppBooksRouteImport.update({
+  id: '/books',
+  path: '/books',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLearningRoute = AppLearningRouteImport.update({
+  id: '/learning',
+  path: '/learning',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWalletRoute = AppWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppClassesIndexRoute = AppClassesIndexRouteImport.update({
+  id: '/classes/',
+  path: '/classes/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppClassesCategoryIdRoute = AppClassesCategoryIdRouteImport.update({
+  id: '/classes/$categoryId',
+  path: '/classes/$categoryId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSessionsSessionIdRoute = AppSessionsSessionIdRouteImport.update({
+  id: '/sessions/$sessionId',
+  path: '/sessions/$sessionId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/books': typeof AppBooksRoute
+  '/app/learning': typeof AppLearningRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/wallet': typeof AppWalletRoute
+  '/app/': typeof AppIndexRoute
+  '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
+  '/app/sessions/$sessionId': typeof AppSessionsSessionIdRoute
+  '/app/classes/': typeof AppClassesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/books': typeof AppBooksRoute
+  '/app/learning': typeof AppLearningRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/wallet': typeof AppWalletRoute
+  '/app': typeof AppIndexRoute
+  '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
+  '/app/sessions/$sessionId': typeof AppSessionsSessionIdRoute
+  '/app/classes': typeof AppClassesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/books': typeof AppBooksRoute
+  '/app/learning': typeof AppLearningRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/wallet': typeof AppWalletRoute
+  '/app/': typeof AppIndexRoute
+  '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
+  '/app/sessions/$sessionId': typeof AppSessionsSessionIdRoute
+  '/app/classes/': typeof AppClassesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/books'
+    | '/app/learning'
+    | '/app/notifications'
+    | '/app/profile'
+    | '/app/wallet'
+    | '/app/'
+    | '/app/classes/$categoryId'
+    | '/app/sessions/$sessionId'
+    | '/app/classes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app/books'
+    | '/app/learning'
+    | '/app/notifications'
+    | '/app/profile'
+    | '/app/wallet'
+    | '/app'
+    | '/app/classes/$categoryId'
+    | '/app/sessions/$sessionId'
+    | '/app/classes'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/books'
+    | '/app/learning'
+    | '/app/notifications'
+    | '/app/profile'
+    | '/app/wallet'
+    | '/app/'
+    | '/app/classes/$categoryId'
+    | '/app/sessions/$sessionId'
+    | '/app/classes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +171,109 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/books': {
+      id: '/app/books'
+      path: '/books'
+      fullPath: '/app/books'
+      preLoaderRoute: typeof AppBooksRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/learning': {
+      id: '/app/learning'
+      path: '/learning'
+      fullPath: '/app/learning'
+      preLoaderRoute: typeof AppLearningRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/notifications': {
+      id: '/app/notifications'
+      path: '/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/wallet': {
+      id: '/app/wallet'
+      path: '/wallet'
+      fullPath: '/app/wallet'
+      preLoaderRoute: typeof AppWalletRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/classes/': {
+      id: '/app/classes/'
+      path: '/classes'
+      fullPath: '/app/classes/'
+      preLoaderRoute: typeof AppClassesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/classes/$categoryId': {
+      id: '/app/classes/$categoryId'
+      path: '/classes/$categoryId'
+      fullPath: '/app/classes/$categoryId'
+      preLoaderRoute: typeof AppClassesCategoryIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/sessions/$sessionId': {
+      id: '/app/sessions/$sessionId'
+      path: '/sessions/$sessionId'
+      fullPath: '/app/sessions/$sessionId'
+      preLoaderRoute: typeof AppSessionsSessionIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppBooksRoute: typeof AppBooksRoute
+  AppLearningRoute: typeof AppLearningRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppWalletRoute: typeof AppWalletRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppClassesCategoryIdRoute: typeof AppClassesCategoryIdRoute
+  AppSessionsSessionIdRoute: typeof AppSessionsSessionIdRoute
+  AppClassesIndexRoute: typeof AppClassesIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppBooksRoute: AppBooksRoute,
+  AppLearningRoute: AppLearningRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppWalletRoute: AppWalletRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppClassesCategoryIdRoute: AppClassesCategoryIdRoute,
+  AppSessionsSessionIdRoute: AppSessionsSessionIdRoute,
+  AppClassesIndexRoute: AppClassesIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
