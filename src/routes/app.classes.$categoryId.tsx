@@ -1,4 +1,4 @@
-import { Link, createFileRoute, notFound } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft, GraduationCap } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
