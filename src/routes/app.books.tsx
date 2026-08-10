@@ -65,8 +65,8 @@ function BooksPage() {
 }
 
 function BookCard({ book }: { book: Book }) {
-  const { balance, isBookPurchased, purchaseBook } = useStudentStore();
-  const owned = isBookPurchased(book.id);
+  const { balance, ownsBook, purchaseBook } = useStudentStore();
+  const owned = ownsBook(book.id);
   const [confirm, setConfirm] = useState(false);
   const enough = balance >= book.price;
 
@@ -75,7 +75,7 @@ function BookCard({ book }: { book: Book }) {
       <div className="aspect-[4/3] bg-secondary">
         <img
           src={book.cover}
-          alt={book.title}
+          alt={book.name}
           loading="lazy"
           width={800}
           height={600}
@@ -84,20 +84,20 @@ function BookCard({ book }: { book: Book }) {
       </div>
       <div className="flex flex-1 flex-col p-4">
         <div className="flex flex-wrap items-center gap-2">
-          <StatusBadge tone={book.type === "digital" ? "primary" : "muted"}>
-            {book.type === "digital" ? "Digital" : "Physical"}
+          <StatusBadge tone={book.kind === "digital" ? "primary" : "muted"}>
+            {book.kind === "digital" ? "Digital" : "Physical"}
           </StatusBadge>
           {owned && <StatusBadge tone="success">Purchased</StatusBadge>}
         </div>
-        <h2 className="mt-2 text-base font-semibold">{book.title}</h2>
+        <h2 className="mt-2 text-base font-semibold">{book.name}</h2>
         <p className="mt-1 text-sm text-muted-foreground">{book.description}</p>
 
         <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
           <p className="font-semibold">{EGP(book.price)}</p>
           {owned ? (
-            book.type === "digital" && book.fileUrl ? (
+            book.kind === "digital" && book.pdfUrl ? (
               <Button asChild size="sm" variant="secondary">
-                <a href={book.fileUrl} target="_blank" rel="noreferrer">
+                <a href={book.pdfUrl} target="_blank" rel="noreferrer">
                   <Download className="size-4" /> Download
                 </a>
               </Button>
@@ -118,11 +118,11 @@ function BookCard({ book }: { book: Book }) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {enough ? `Buy ${book.title}?` : "Insufficient wallet balance"}
+              {enough ? `Buy ${book.name}?` : "Insufficient wallet balance"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {enough
-                ? book.type === "digital"
+                ? book.kind === "digital"
                   ? "The book becomes downloadable immediately after purchase."
                   : "Your physical book will be delivered to the address on your profile."
                 : `You need ${EGP(book.price - balance)} more in your wallet.`}

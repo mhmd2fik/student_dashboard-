@@ -27,7 +27,7 @@ export const Route = createFileRoute("/app/notifications")({
 });
 
 function NotificationsPage() {
-  const { notifications, markAllNotificationsRead, markNotificationRead } =
+  const { notifications, markAllRead, markNotificationRead } =
     useStudentStore();
   const unread = notifications.filter((n) => !n.read).length;
 
@@ -41,7 +41,7 @@ function NotificationsPage() {
           </p>
         </div>
         {unread > 0 && (
-          <Button variant="secondary" size="sm" onClick={markAllNotificationsRead}>
+          <Button variant="secondary" size="sm" onClick={markAllRead}>
             <CheckCheck className="size-4" /> Mark all read
           </Button>
         )}
@@ -65,10 +65,10 @@ function NotificationsPage() {
                 <span className="min-w-0">
                   <span className="flex flex-wrap items-center gap-2">
                     <span className="text-sm font-semibold">{n.title}</span>
-                    <StatusBadge tone="muted">{n.category}</StatusBadge>
+                    <StatusBadge tone="muted">Update</StatusBadge>
                   </span>
                   <span className="mt-1 block text-sm text-muted-foreground">
-                    {n.body}
+                    {n.message}
                   </span>
                   <span className="mt-1 block text-xs text-muted-foreground">
                     {formatDateTime(n.date)}

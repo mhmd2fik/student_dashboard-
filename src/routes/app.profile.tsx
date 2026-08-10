@@ -4,7 +4,7 @@ import { LogOut, ShieldCheck, Smartphone } from "lucide-react";
 import { StudentQrCode } from "@/components/StudentQrCode";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
-import { EGP, formatDate, levelLabel } from "@/lib/logic";
+import { EGP, formatDate } from "@/lib/logic";
 import { useStudentStore } from "@/lib/store";
 
 export const Route = createFileRoute("/app/profile")({
@@ -32,12 +32,12 @@ function ProfilePage() {
 
   const fields = [
     { label: "Student ID", value: student.studentId },
-    { label: "Full name", value: student.name },
+    { label: "Full name", value: student.fullName },
     { label: "Phone number", value: student.phone },
     { label: "Parent phone", value: student.parentPhone },
-    { label: "Education level", value: levelLabel[student.level] },
-    { label: "Address", value: student.address },
-    { label: "Registered on", value: formatDate(student.createdAt) },
+    { label: "Education level", value: student.level },
+    { label: "Governorate", value: student.governorate },
+    
     { label: "Wallet balance", value: EGP(balance) },
     { label: "Purchased sessions", value: String(purchases.length) },
   ];
@@ -76,7 +76,7 @@ function ProfilePage() {
                 <Smartphone className="size-3.5" /> Locked device
               </p>
               <p className="mt-0.5 truncate text-sm font-medium">
-                {student.deviceLabel ?? "This device"}
+                {student.deviceId ? "Locked to this device" : "Not locked yet"}
               </p>
             </div>
             <div className="min-w-0">
@@ -97,7 +97,7 @@ function ProfilePage() {
           </div>
         </section>
 
-        <StudentQrCode student={student} />
+        <StudentQrCode studentId={student.studentId} />
       </div>
     </div>
   );
