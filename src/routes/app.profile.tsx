@@ -4,7 +4,7 @@ import { LogOut, ShieldCheck, Smartphone } from "lucide-react";
 import { StudentQrCode } from "@/components/StudentQrCode";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
-import { EGP, formatDate } from "@/lib/logic";
+import { EGP } from "@/lib/logic";
 import { useStudentStore } from "@/lib/store";
 
 export const Route = createFileRoute("/app/profile")({
