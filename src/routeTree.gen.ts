@@ -12,7 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppBooksRouteImport } from './routes/app.books'
 import { Route as AppLearningRouteImport } from './routes/app.learning'
+import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
 import { Route as AppWalletRouteImport } from './routes/app.wallet'
 import { Route as AppClassesIndexRouteImport } from './routes/app.classes.index'
 import { Route as AppClassesCategoryIdRouteImport } from './routes/app.classes.$categoryId'
@@ -33,9 +36,24 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBooksRoute = AppBooksRouteImport.update({
+  id: '/books',
+  path: '/books',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppLearningRoute = AppLearningRouteImport.update({
   id: '/learning',
   path: '/learning',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
 const AppWalletRoute = AppWalletRouteImport.update({
@@ -62,7 +80,10 @@ const AppSessionsSessionIdRoute = AppSessionsSessionIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/books': typeof AppBooksRoute
   '/app/learning': typeof AppLearningRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
   '/app/wallet': typeof AppWalletRoute
   '/app/': typeof AppIndexRoute
   '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
@@ -71,7 +92,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/books': typeof AppBooksRoute
   '/app/learning': typeof AppLearningRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
   '/app/wallet': typeof AppWalletRoute
   '/app': typeof AppIndexRoute
   '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
@@ -82,7 +106,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/books': typeof AppBooksRoute
   '/app/learning': typeof AppLearningRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
   '/app/wallet': typeof AppWalletRoute
   '/app/': typeof AppIndexRoute
   '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
@@ -94,7 +121,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/app/books'
     | '/app/learning'
+    | '/app/notifications'
+    | '/app/profile'
     | '/app/wallet'
     | '/app/'
     | '/app/classes/$categoryId'
@@ -103,7 +133,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/app/books'
     | '/app/learning'
+    | '/app/notifications'
+    | '/app/profile'
     | '/app/wallet'
     | '/app'
     | '/app/classes/$categoryId'
@@ -113,7 +146,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
+    | '/app/books'
     | '/app/learning'
+    | '/app/notifications'
+    | '/app/profile'
     | '/app/wallet'
     | '/app/'
     | '/app/classes/$categoryId'
@@ -149,11 +185,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/books': {
+      id: '/app/books'
+      path: '/books'
+      fullPath: '/app/books'
+      preLoaderRoute: typeof AppBooksRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/learning': {
       id: '/app/learning'
       path: '/learning'
       fullPath: '/app/learning'
       preLoaderRoute: typeof AppLearningRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/notifications': {
+      id: '/app/notifications'
+      path: '/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/wallet': {
@@ -188,7 +245,10 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppBooksRoute: typeof AppBooksRoute
   AppLearningRoute: typeof AppLearningRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppProfileRoute: typeof AppProfileRoute
   AppWalletRoute: typeof AppWalletRoute
   AppIndexRoute: typeof AppIndexRoute
   AppClassesCategoryIdRoute: typeof AppClassesCategoryIdRoute
@@ -197,7 +257,10 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppBooksRoute: AppBooksRoute,
   AppLearningRoute: AppLearningRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppProfileRoute: AppProfileRoute,
   AppWalletRoute: AppWalletRoute,
   AppIndexRoute: AppIndexRoute,
   AppClassesCategoryIdRoute: AppClassesCategoryIdRoute,
