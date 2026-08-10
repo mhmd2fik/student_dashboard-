@@ -12,8 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppLearningRouteImport } from './routes/app.learning'
+import { Route as AppWalletRouteImport } from './routes/app.wallet'
 import { Route as AppClassesIndexRouteImport } from './routes/app.classes.index'
 import { Route as AppClassesCategoryIdRouteImport } from './routes/app.classes.$categoryId'
+import { Route as AppSessionsSessionIdRouteImport } from './routes/app.sessions.$sessionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,6 +33,16 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLearningRoute = AppLearningRouteImport.update({
+  id: '/learning',
+  path: '/learning',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWalletRoute = AppWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppClassesIndexRoute = AppClassesIndexRouteImport.update({
   id: '/classes/',
   path: '/classes/',
@@ -40,40 +53,71 @@ const AppClassesCategoryIdRoute = AppClassesCategoryIdRouteImport.update({
   path: '/classes/$categoryId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSessionsSessionIdRoute = AppSessionsSessionIdRouteImport.update({
+  id: '/sessions/$sessionId',
+  path: '/sessions/$sessionId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/learning': typeof AppLearningRoute
+  '/app/wallet': typeof AppWalletRoute
   '/app/': typeof AppIndexRoute
   '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
+  '/app/sessions/$sessionId': typeof AppSessionsSessionIdRoute
   '/app/classes/': typeof AppClassesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/learning': typeof AppLearningRoute
+  '/app/wallet': typeof AppWalletRoute
   '/app': typeof AppIndexRoute
   '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
+  '/app/sessions/$sessionId': typeof AppSessionsSessionIdRoute
   '/app/classes': typeof AppClassesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/learning': typeof AppLearningRoute
+  '/app/wallet': typeof AppWalletRoute
   '/app/': typeof AppIndexRoute
   '/app/classes/$categoryId': typeof AppClassesCategoryIdRoute
+  '/app/sessions/$sessionId': typeof AppSessionsSessionIdRoute
   '/app/classes/': typeof AppClassesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/app' | '/app/' | '/app/classes/$categoryId' | '/app/classes/'
+    | '/'
+    | '/app'
+    | '/app/learning'
+    | '/app/wallet'
+    | '/app/'
+    | '/app/classes/$categoryId'
+    | '/app/sessions/$sessionId'
+    | '/app/classes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/classes/$categoryId' | '/app/classes'
+  to:
+    | '/'
+    | '/app/learning'
+    | '/app/wallet'
+    | '/app'
+    | '/app/classes/$categoryId'
+    | '/app/sessions/$sessionId'
+    | '/app/classes'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/app/learning'
+    | '/app/wallet'
     | '/app/'
     | '/app/classes/$categoryId'
+    | '/app/sessions/$sessionId'
     | '/app/classes/'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +149,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/learning': {
+      id: '/app/learning'
+      path: '/learning'
+      fullPath: '/app/learning'
+      preLoaderRoute: typeof AppLearningRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/wallet': {
+      id: '/app/wallet'
+      path: '/wallet'
+      fullPath: '/app/wallet'
+      preLoaderRoute: typeof AppWalletRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/classes/': {
       id: '/app/classes/'
       path: '/classes'
@@ -119,18 +177,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppClassesCategoryIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/sessions/$sessionId': {
+      id: '/app/sessions/$sessionId'
+      path: '/sessions/$sessionId'
+      fullPath: '/app/sessions/$sessionId'
+      preLoaderRoute: typeof AppSessionsSessionIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppLearningRoute: typeof AppLearningRoute
+  AppWalletRoute: typeof AppWalletRoute
   AppIndexRoute: typeof AppIndexRoute
   AppClassesCategoryIdRoute: typeof AppClassesCategoryIdRoute
+  AppSessionsSessionIdRoute: typeof AppSessionsSessionIdRoute
   AppClassesIndexRoute: typeof AppClassesIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppLearningRoute: AppLearningRoute,
+  AppWalletRoute: AppWalletRoute,
   AppIndexRoute: AppIndexRoute,
   AppClassesCategoryIdRoute: AppClassesCategoryIdRoute,
+  AppSessionsSessionIdRoute: AppSessionsSessionIdRoute,
   AppClassesIndexRoute: AppClassesIndexRoute,
 }
 
@@ -143,13 +214,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
