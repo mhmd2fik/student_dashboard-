@@ -2,6 +2,7 @@ import type {
   Book,
   Category,
   Notification,
+  RechargeCode,
   Session,
   Student,
   Transaction,
@@ -512,12 +513,19 @@ export const NOTIFICATIONS: Notification[] = [
   },
 ];
 
+export const RECHARGE_CODES: RechargeCode[] = [
+  { code: "12truuy12uio213hoi", value: 120 },
+  { code: "MATH2026-4XK9PQ", value: 250 },
+  { code: "MATH2026-7BN2LD", value: 500 },
+  { code: "WALLET-90TZ4M", value: 100 },
+];
+
 export const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     id: "t_1",
     date: daysAgo(30),
-    type: "Fawry Recharge",
-    description: "Wallet recharge via Fawry",
+    type: "Code Recharge",
+    description: "Recharge code redeemed",
     amount: 500,
     balanceAfter: 500,
   },
@@ -532,8 +540,8 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     id: "t_3",
     date: daysAgo(20),
-    type: "Fawry Recharge",
-    description: "Wallet recharge via Fawry",
+    type: "Code Recharge",
+    description: "Recharge code redeemed",
     amount: 300,
     balanceAfter: 700,
   },
@@ -588,8 +596,8 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     id: "t_10",
     date: daysAgo(1),
-    type: "Fawry Recharge",
-    description: "Wallet recharge via Fawry",
+    type: "Code Recharge",
+    description: "Recharge code redeemed",
     amount: 45,
     balanceAfter: 400,
   },
