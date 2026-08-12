@@ -149,7 +149,7 @@ export interface BookOrder {
 export interface Transaction {
   id: string;
   date: string;
-  type: "Fawry Recharge" | "Session Purchase" | "Book Purchase" | "Refund";
+  type: "Code Recharge" | "Session Purchase" | "Book Purchase" | "Refund";
   description: string;
   amount: number;
   balanceAfter: number;
@@ -194,4 +194,9 @@ export interface Notification {
   image?: string | undefined;
   date: string;
   read: boolean;
+}
+
+export interface RechargeCode {
+  code: string;
+  value: number;
 }

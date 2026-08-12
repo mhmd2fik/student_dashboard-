@@ -14,6 +14,7 @@ import {
   DEMO_STUDENT,
   INITIAL_TRANSACTIONS,
   NOTIFICATIONS,
+  RECHARGE_CODES,
   SESSIONS,
 } from "./demo-data";
 import { gradeAttempt, getAccessInfo, getSessionProgress } from "./logic";
@@ -61,6 +62,7 @@ interface AppState {
   attempts: TestAttempt[];
   homework: HomeworkSubmission[];
   notifications: Notification[];
+  redeemedCodes: string[];
 }
 
 const initialState = (): AppState => ({
@@ -115,6 +117,7 @@ const initialState = (): AppState => ({
   ],
   homework: [],
   notifications: NOTIFICATIONS,
+  redeemedCodes: [],
 });
 
 function loadState(): AppState {
@@ -169,7 +172,7 @@ interface StoreValue {
   login: (identifier: string, password: string) => LoginResult;
   register: (data: Omit<Student, "id" | "studentId" | "status" | "deviceId">) => string;
   logout: () => void;
-  recharge: (amount: number) => void;
+  redeemCode: (code: string) => { ok: boolean; message: string; value?: number };
   purchaseSession: (sessionId: string) => PurchaseResult;
   purchaseBook: (bookId: string) => PurchaseResult;
   orderBook: (
@@ -316,13 +319,30 @@ export function StudentStoreProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, currentStudentId: null }));
   }, []);
 
-  const recharge = useCallback(
-    (amount: number) => {
-      setState((prev) =>
-        addTransaction(prev, "Fawry Recharge", "Wallet recharge via Fawry", amount),
+  const redeemCode = useCallback<StoreValue["redeemCode"]>(
+    (raw) => {
+      const code = raw.trim();
+      const match = RECHARGE_CODES.find(
+        (c) => c.code.toLowerCase() === code.toLowerCase(),
       );
+      if (!match) {
+        return { ok: false, message: "This recharge code is not valid." };
+      }
+      if (state.redeemedCodes.includes(match.code)) {
+        return { ok: false, message: "This code has already been used." };
+      }
+      setState((prev) => ({
+        ...addTransaction(
+          prev,
+          "Code Recharge",
+          `Recharge code ${match.code}`,
+          match.value,
+        ),
+        redeemedCodes: [...prev.redeemedCodes, match.code],
+      }));
+      return { ok: true, message: "Code redeemed.", value: match.value };
     },
-    [addTransaction],
+    [addTransaction, state.redeemedCodes],
   );
 
   const purchaseSession = useCallback<StoreValue["purchaseSession"]>(
@@ -605,7 +625,7 @@ export function StudentStoreProvider({ children }: { children: ReactNode }) {
     login,
     register,
     logout,
-    recharge,
+    redeemCode,
     purchaseSession,
     purchaseBook,
     orderBook,

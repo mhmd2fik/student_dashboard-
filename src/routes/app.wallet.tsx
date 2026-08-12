@@ -36,12 +36,12 @@ export const Route = createFileRoute("/app/wallet")({
       {
         name: "description",
         content:
-          "Check your wallet balance, recharge any amount with Fawry and review every transaction.",
+          "Check your wallet balance, redeem a recharge code and review every transaction.",
       },
       { property: "og:title", content: "Wallet — Mathematics Academy" },
       {
         property: "og:description",
-        content: "Balance, Fawry recharge and full transaction history.",
+        content: "Balance, recharge codes and full transaction history.",
       },
     ],
   }),
@@ -49,21 +49,26 @@ export const Route = createFileRoute("/app/wallet")({
 });
 
 function WalletPage() {
-  const { balance, transactions, recharge } = useStudentStore();
-  const [amount, setAmount] = useState("");
+  const { balance, transactions, redeemCode } = useStudentStore();
+  const [code, setCode] = useState("");
   const [confirm, setConfirm] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const value = Number(amount);
-  const valid = Number.isFinite(value) && value >= 10;
+  const valid = code.trim().length >= 6;
 
-  const pay = () => {
+  const redeem = () => {
     setProcessing(true);
     setTimeout(() => {
-      recharge(value);
+      const result = redeemCode(code);
       setProcessing(false);
-      setAmount("");
-      toast.success(`Payment confirmed. ${EGP(value)} added to your wallet.`);
-    }, 1200);
+      if (result.ok) {
+        setCode("");
+        toast.success(
+          `Code accepted. ${EGP(result.value ?? 0)} added to your wallet.`,
+        );
+      } else {
+        toast.error(result.message);
+      }
+    }, 900);
   };
 
   return (
@@ -82,38 +87,26 @@ function WalletPage() {
           </div>
           <p className="mt-3 text-4xl font-semibold sm:text-5xl">{EGP(balance)}</p>
           <p className="mt-3 max-w-md text-sm opacity-80">
-            Your wallet is credited only after Fawry confirms the payment. Duplicate
-            confirmations are ignored, so you are never charged or credited twice.
+            Buy a recharge code from your teacher, then enter it here. Each code can be
+            used once and its value is added to your wallet instantly.
           </p>
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-6 shadow-card">
-          <h2 className="text-base font-semibold">Recharge</h2>
+          <h2 className="text-base font-semibold">Redeem a recharge code</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Enter any amount — there are no fixed packages.
+            Enter the code exactly as printed on your card.
           </p>
           <div className="mt-4 space-y-2">
-            <Label htmlFor="amount">Amount (EGP)</Label>
+            <Label htmlFor="code">Recharge code</Label>
             <Input
-              id="amount"
-              inputMode="numeric"
-              placeholder="300"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value.replace(/[^0-9]/g, ""))}
+              id="code"
+              autoCapitalize="none"
+              spellCheck={false}
+              placeholder="e.g. 12truuy12uio213hoi"
+              value={code}
+              onChange={(e) => setCode(e.target.value.trim())}
             />
-            <div className="flex flex-wrap gap-2 pt-1">
-              {[100, 250, 500, 1250].map((preset) => (
-                <Button
-                  key={preset}
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setAmount(String(preset))}
-                >
-                  {preset.toLocaleString("en-US")}
-                </Button>
-              ))}
-            </div>
           </div>
           <Button
             className="mt-5 w-full"
@@ -121,9 +114,11 @@ function WalletPage() {
             onClick={() => setConfirm(true)}
           >
             {processing && <Loader2 className="size-4 animate-spin" />}
-            Recharge with Fawry
+            Redeem code
           </Button>
-          <p className="mt-2 text-xs text-muted-foreground">Minimum recharge is 10 EGP.</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Demo code: 12truuy12uio213hoi (120 EGP).
+          </p>
         </section>
       </div>
 
@@ -207,15 +202,15 @@ function WalletPage() {
       <AlertDialog open={confirm} onOpenChange={setConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Recharge {EGP(value || 0)} with Fawry?</AlertDialogTitle>
+            <AlertDialogTitle>Redeem this recharge code?</AlertDialogTitle>
             <AlertDialogDescription>
-              You will be redirected to Fawry to complete the payment. Your wallet is
-              credited only after the payment is confirmed.
+              The value of the code will be added to your wallet balance. Each code can
+              only be redeemed once.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={pay}>Continue to Fawry</AlertDialogAction>
+            <AlertDialogAction onClick={redeem}>Redeem</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
