@@ -202,15 +202,15 @@ function WalletPage() {
       <AlertDialog open={confirm} onOpenChange={setConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Recharge {EGP(value || 0)} with Fawry?</AlertDialogTitle>
+            <AlertDialogTitle>Redeem this recharge code?</AlertDialogTitle>
             <AlertDialogDescription>
-              You will be redirected to Fawry to complete the payment. Your wallet is
-              credited only after the payment is confirmed.
+              The value of the code will be added to your wallet balance. Each code can
+              only be redeemed once.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={pay}>Continue to Fawry</AlertDialogAction>
+            <AlertDialogAction onClick={redeem}>Redeem</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
