@@ -36,12 +36,12 @@ export const Route = createFileRoute("/app/wallet")({
       {
         name: "description",
         content:
-          "Check your wallet balance, recharge any amount with Fawry and review every transaction.",
+          "Check your wallet balance, redeem a recharge code and review every transaction.",
       },
       { property: "og:title", content: "Wallet — Mathematics Academy" },
       {
         property: "og:description",
-        content: "Balance, Fawry recharge and full transaction history.",
+        content: "Balance, recharge codes and full transaction history.",
       },
     ],
   }),

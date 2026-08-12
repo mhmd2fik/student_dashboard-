@@ -573,7 +573,7 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
     id: "t_7",
     date: daysAgo(5),
     type: "Refund",
-    description: "Goodwill refund — duplicate Fawry payment",
+    description: "Goodwill refund — duplicate recharge code",
     amount: 100,
     balanceAfter: 515,
   },
